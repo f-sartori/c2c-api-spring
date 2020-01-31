@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Vendedor {
 	
@@ -21,9 +23,12 @@ public class Vendedor {
 	private String senhaConf;
 	
 	@OneToMany(mappedBy = "vendedor")
+	@JsonIgnoreProperties(value = {"nome, categoria","vendedor","produtos"})
 	private List<Produto> produtos;
 	
-	@OneToMany(mappedBy = "vendedor")
+	
+	@OneToMany(mappedBy = "vendedor")	
+	@JsonIgnoreProperties(value = {"vendedor","produtos"})
 	private List<Compra> compras;
 
 	public int getIdVendedor() {

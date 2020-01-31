@@ -1,10 +1,15 @@
 package com.generation.c2cspring.entities;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Produto {
@@ -18,11 +23,17 @@ public class Produto {
 	private int qtd;
 	
 	@ManyToOne
+	@JsonIgnoreProperties(value = {"categoria", "produtos"})
 	private Categoria categoria;
 	
 	@ManyToOne
+	@JsonIgnoreProperties(value = {"produtos","vendedor"})
 	private Vendedor vendedor;
-
+	
+	@OneToMany(mappedBy = "produto")
+	@JsonIgnoreProperties(value = {"produtos","categoria"})
+	private List<Compra> compras;
+	
 	public int getIdProduto() {
 		return idProduto;
 	}
@@ -69,6 +80,22 @@ public class Produto {
 
 	public void setQtd(int qtd) {
 		this.qtd = qtd;
+	}
+
+	public Vendedor getVendedor() {
+		return vendedor;
+	}
+
+	public void setVendedor(Vendedor vendedor) {
+		this.vendedor = vendedor;
+	}
+
+	public List<Compra> getCompras() {
+		return compras;
+	}
+
+	public void setCompras(List<Compra> compras) {
+		this.compras = compras;
 	}
 	
 	

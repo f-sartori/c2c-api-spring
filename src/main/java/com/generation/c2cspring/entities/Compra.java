@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 
 @Entity
@@ -20,13 +22,16 @@ public class Compra {
 	private double valorTotal;
 	
 	@ManyToOne
+	@JsonIgnoreProperties(value = {"compras","vendedor"})
 	private Usuario usuario;
 	
 	@ManyToOne
+	@JsonIgnoreProperties(value = {"telefone","senha","senhaConf","produtos","produtos","compras"})
 	private Vendedor vendedor;
 	
-	@OneToMany(mappedBy = "compras")
-	private List<Produto> produtos;
+	@ManyToOne
+	@JsonIgnoreProperties(value = {"compras","vendedor","categoria"})
+	private Produto produto;
 
 	public int getIdVenda() {
 		return idVenda;
@@ -60,12 +65,12 @@ public class Compra {
 		this.vendedor = vendedor;
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
+	public Produto getProduto() {
+		return produto;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setProdutos(Produto produto) {
+		this.produto = produto;
 	}
 	
 	
