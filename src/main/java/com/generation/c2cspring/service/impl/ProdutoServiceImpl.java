@@ -35,4 +35,9 @@ public class ProdutoServiceImpl implements ProdutoService {
 		
 	}
 
+	@Override
+	public Produto getByName(String name) {
+		return this.repository.getByNome(name);
+	}
+
 }

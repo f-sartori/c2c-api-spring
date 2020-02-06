@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.generation.c2cspring.entities.Produto;
 
+
 public interface ProdutoService {
 	
 	Produto getById(int id);
+	Produto getByName(String name);
 	
 	List<Produto> getAll();
 	

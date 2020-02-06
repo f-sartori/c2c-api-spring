@@ -35,6 +35,10 @@ public class ProdutoController {
 	public ResponseEntity<Produto> getById(@Valid @PathVariable int id) {
 		return ResponseEntity.ok(service.getById(id));
 }
+	@GetMapping("/produto/nome/{name}")
+	public ResponseEntity<Produto> getByName(@PathVariable String name){
+		return ResponseEntity.ok(this.service.getByName(name));
+	}
 	
 	@PostMapping("/produto")
 	public ResponseEntity<Produto> post(@RequestBody Produto produto){
