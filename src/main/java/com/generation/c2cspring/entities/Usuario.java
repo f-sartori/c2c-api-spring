@@ -21,6 +21,7 @@ public class Usuario {
 	private String email;
 	private String senha;
 	private String senhaConf;
+	private String tipo;
 	
 	@OneToMany(mappedBy = "usuario" )
 	@JsonIgnoreProperties(value = {"usuario, vendedor"})
@@ -80,6 +81,14 @@ public class Usuario {
 
 	public void setCompras(List<Compra> compras) {
 		this.compras = compras;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.generation.c2cspring.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.c2cspring.entities.Usuario;
+import com.generation.c2cspring.model.security.Auth;
+import com.generation.c2cspring.model.security.Token;
 import com.generation.c2cspring.service.UsuarioService;
+
+
 
 
 
@@ -68,6 +73,25 @@ public class UsuarioController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(null);
 		}
+	}
+	
+	@PostMapping("/usuario/login")
+	public ResponseEntity<Token> autentica(@RequestBody Usuario usuario) {
+		List<Usuario> lista = service.getAll();
+		for (int i = 0; i < lista.size(); i++) {
+			if (usuario.getEmail().equals(lista.get(i).getEmail())
+					&& usuario.getSenha().equals(lista.get(i).getSenha())) {
+				usuario = lista.get(i);
+				String tk = Auth.generateToken(usuario);
+				Token token = new Token();
+				token.setToken(tk);
+				token.setNome(lista.get(i).getNome());
+				token.setEmail(lista.get(i).getEmail());
+
+				return ResponseEntity.ok(token);
+			}
+		}
+		return ResponseEntity.status(403).build();
 	}
 	
 	

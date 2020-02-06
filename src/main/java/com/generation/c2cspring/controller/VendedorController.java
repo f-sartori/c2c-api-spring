@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.generation.c2cspring.entities.Usuario;
 import com.generation.c2cspring.entities.Vendedor;
+import com.generation.c2cspring.model.security.Auth;
+import com.generation.c2cspring.model.security.Token;
 import com.generation.c2cspring.service.VendedorService;
 
 @RestController
@@ -61,10 +64,29 @@ public class VendedorController {
 		}
 	}
 	
-	@DeleteMapping("vendedor/{id}")
+	@DeleteMapping("/vendedor/{id}")
 	public ResponseEntity<String> delete(@PathVariable int id){
 		service.delete(id);
 		return ResponseEntity.ok("Deletado");
+	}
+	
+	@PostMapping("/vendedor/login")
+	public ResponseEntity<Token> autentica(@RequestBody Vendedor vendedor) {
+		List<Vendedor> lista = service.getAll();
+		for (int i = 0; i < lista.size(); i++) {
+			if (vendedor.getEmail().equals(lista.get(i).getEmail())
+					&& vendedor.getSenha().equals(lista.get(i).getSenha())) {
+				vendedor = lista.get(i);
+				String tk = Auth.generateTokenVendedor(vendedor);
+				Token token = new Token();
+				token.setToken(tk);
+				token.setNome(lista.get(i).getNome());
+				token.setEmail(lista.get(i).getEmail());
+
+				return ResponseEntity.ok(token);
+			}
+		}
+		return ResponseEntity.status(403).build();
 	}
 	
 }
